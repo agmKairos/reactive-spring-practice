@@ -13,7 +13,7 @@
 	<artifactId>practica-reactive-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>practica-reactive-spring</name>
-	<description>Users REST API in a imperative style</description>
+	<description>Blog REST API</description>
 
 	<properties>
 		<java.version>11</java.version>

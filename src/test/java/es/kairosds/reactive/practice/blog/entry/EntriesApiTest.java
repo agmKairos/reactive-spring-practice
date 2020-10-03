@@ -61,7 +61,7 @@ public class EntriesApiTest {
    
 
     @Test
-    public void deleteUser() {
+    public void deleteEntry() {
 
     	webTestClient.delete().uri("/entries/{id}", "id")
         .accept(MediaType.APPLICATION_JSON)

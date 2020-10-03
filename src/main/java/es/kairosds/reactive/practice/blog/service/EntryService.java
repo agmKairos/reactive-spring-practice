@@ -12,8 +12,8 @@ public class EntryService {
 
     private EntryRepository entryRepository;
 
-    EntryService(EntryRepository userRepository) {
-        this.entryRepository = userRepository;
+    EntryService(EntryRepository entryRepository) {
+        this.entryRepository = entryRepository;
     }
 
     public Mono<Entry> saveEntry(Entry entry) {

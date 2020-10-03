@@ -1,9 +1,6 @@
 package es.kairosds.reactive.practice.blog.entry;
 
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -39,60 +36,40 @@ public class EntriesApiTest {
 			.jsonPath("$.authorName").isEqualTo("authorName");
 
     }
-//
-//    @Test
-//    public void getById() {
-//
-//        given().
-//                request().
-//        when().
-//                get("/users/1").
-//        then().
-//                statusCode(200).
-//                body("id", is(1));
-//    }
-//
+
+    @Test
+    public void getById() {
+
+    	 webTestClient.get().uri("/entries/")
+         .accept(MediaType.APPLICATION_JSON)
+         .exchange()
+         .expectStatus().isOk()
+         .expectHeader().contentType(MediaType.APPLICATION_JSON)
+         .expectBodyList(EntryDTO.class);
+    }
+
 //    @Test
 //    public void getByIdNofFound() {
 //
-//        given().
-//                request().
-//                when().
-//                get("/users/1000").
-//                then().
-//                statusCode(404);
+//    	 webTestClient.get().uri("/entries/{id}", "notFoundId")
+//         .accept(MediaType.APPLICATION_JSON)
+//         .exchange()
+//         .expectStatus().isNotFound()
+//         .expectHeader().contentType(MediaType.APPLICATION_JSON);
 //    }
-//
-//    @Test
-//    public void getByFirstName() {
-//
-//        given().
-//                request().param("firstName", "Juan").
-//        when().
-//                get("/users/").
-//        then().
-//                statusCode(200).
-//                body("size()", is(2));
-//    }
-//
-//    @Test
-//    public void deleteUser() {
-//
-//        given().
-//            request().
-//        when().
-//            delete("/users/2").
-//        then().
-//            statusCode(200).
-//            body("id", is(2));
-//
-//        given().
-//            request().
-//        when().
-//            get("/users/2").
-//        then().
-//            statusCode(404);
-//
-//    }
+
+   
+
+    @Test
+    public void deleteUser() {
+
+    	webTestClient.delete().uri("/entries/{id}", "id")
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange()
+        .expectStatus().isOk()
+        .expectHeader().contentType(MediaType.APPLICATION_JSON)
+        .expectBody(EntryDTO.class);
+
+    }
 
 }

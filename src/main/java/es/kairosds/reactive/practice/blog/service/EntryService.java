@@ -1,6 +1,8 @@
 package es.kairosds.reactive.practice.blog.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.kairosds.reactive.practice.blog.domain.entity.Entry;
 import es.kairosds.reactive.practice.blog.domain.repository.EntryRepository;
@@ -30,7 +32,8 @@ public class EntryService {
     }
 
     public Mono<Entry> getEntry(String id) {
-        return entryRepository.findById(id);
+        return entryRepository.findById(id)
+        		.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")));
     }
 
     public Mono<Entry> deleteEntry(String id) {

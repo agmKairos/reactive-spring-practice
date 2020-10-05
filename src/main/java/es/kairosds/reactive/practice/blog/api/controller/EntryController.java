@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +34,12 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/entries/")
 public class EntryController {
 
+	
     private EntryService entryService;
     
     private PatchService patchService;
 
+    @Autowired
     EntryController(EntryService entryService, PatchService patchService) {
         this.entryService = entryService;
         this.patchService = patchService;
@@ -79,10 +82,11 @@ public class EntryController {
     
     @PostMapping("/{entryId}/comment")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<EntryDTO> createEntryComment(@PathVariable String entryId, @RequestBody CommentDTO commentDTO) {
+    public Mono<EntryDTO> createEntryComment(@PathVariable String entryId, @RequestBody Mono<CommentDTO> commentDTO) {
     	
     	return entryService.getEntry(entryId)
-    			.map(entry -> addCommentToEntry(entry, toComment(commentDTO)))
+    			.zipWith(commentDTO)
+    			.map(EntryAndComment -> addCommentToEntry(EntryAndComment.getT1(), toComment(EntryAndComment.getT2())))
     			.flatMap(entryService::saveEntry)
     			.map(this::toEntryDTO);
     	
